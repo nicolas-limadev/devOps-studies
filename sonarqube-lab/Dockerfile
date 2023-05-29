@@ -29,10 +29,13 @@ RUN wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sona
 ENV PATH="/opt/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/bin/linux-x86-64:${PATH}"
 
 # Definir o diretório de trabalho
-WORKDIR /app
+WORKDIR /opt/sonarqube-${SONARQUBE_VERSION}
 
+COPY provision.sh /opt/sonarqube-${SONARQUBE_VERSION}/provision.sh
+
+RUN chmod +x /opt/sonarqube-${SONARQUBE_VERSION}/provision.sh
 # Expor a porta do SonarQube
 EXPOSE 9000
 
 # Iniciar o SonarQube
-CMD ["sonar.sh", "start"]
+CMD ["./bin/linux-x86-64/sonar.sh", "start"]

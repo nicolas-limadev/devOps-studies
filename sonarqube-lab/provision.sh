@@ -33,6 +33,3 @@ mv /opt/sonar-scanner-cli-4.6.2.2472-linux /opt/sonar-scanner
 chown -R sonar:sonar /opt/sonar-scanner
 echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> ~/.bashrc
 source ~/.bashrc
-curl -sL https://deb.nodesource.com/setup_10.x -o /tmp/nodesource_setup.sh
-bash /tmp/nodesource_setup.sh
-apt install nodejs -y
