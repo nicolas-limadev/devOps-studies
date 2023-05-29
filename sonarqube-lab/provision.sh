@@ -1,7 +1,6 @@
 #!/bin/bash
 useradd sonar
 echo "instalando dependencias"
-apt install wget unzip openjdk-11-jdk -y
 wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.1.0.47736.zip
 unzip -o sonarqube-9.1.0.47736.zip -d /opt/
 mv /opt/sonarqube-9.1.0.47736 /opt/sonarqube
@@ -28,12 +27,12 @@ EOT
 systemctl daemon-reload
 service sonar start
 
-wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-unzip -o sonar-scanner-cli-4.6.2.2472-linux.zip -d /opt/
-mv /opt/sonar-scanner-cli-4.6.2.2472-linux /opt/sonar-scanner
-chown -R sonar:sonar /opt/sonar-scanner
-echo 'export PATH=$PATH:/opt/sonar-scanner/bin' | sudo tee -a /etc/profile
-cd ~
-curl -sL https://deb.nodesource.com/setup_10.x -o /tmp/nodesource_setup.sh
-bash /tmp/nodesource_setup.sh
-apt install nodejs -y
+# wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+# unzip sonar-scanner-cli-4.6.2.2472-linux.zip
+# mv /opt/sonar-scanner-cli-4.6.2.2472-linux /opt/sonar-scanner
+# chown -R sonar:sonar /opt/sonar-scanner
+# echo 'export PATH=$PATH:/opt/sonar-scanner/bin' >> ~/.bashrc
+# source ~/.bashrc
+# curl -sL https://deb.nodesource.com/setup_10.x -o /tmp/nodesource_setup.sh
+# bash /tmp/nodesource_setup.sh
+# apt install nodejs -y
