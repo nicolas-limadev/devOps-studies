@@ -1,41 +1,16 @@
-FROM alpine:latest
+# Use a imagem do Sonar Scanner
+FROM sonarsource/sonar-scanner-cli
 
-# Instalar pacotes necessários
-RUN apk update && \
-    apk add --no-cache wget unzip curl
+# Defina as variáveis de ambiente do SonarQube
+ENV SONAR_HOST_URL=http://localhost:9000
+ENV SONAR_LOGIN=sqp_ed97d15f47df371831f9e4b6ddada74e93047df7
 
-# Instalar o Go
-ENV GOLANG_VERSION=1.17
-RUN wget -O go.tar.gz https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go.tar.gz && \
-    rm go.tar.gz
-ENV PATH="/usr/local/go/bin:${PATH}"
+# Defina o diretório de trabalho
+WORKDIR /usr/src/app
 
-# Instalar o OpenJDK 11
-RUN apk add --no-cache openjdk11
+# Copie o código fonte para o contêiner
+COPY . .
 
-# Instalar o SonarQube
-ENV SONARQUBE_VERSION=9.1.0.47736
-RUN wget -O sonarqube.zip https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-${SONARQUBE_VERSION}.zip && \
-    unzip sonarqube.zip -d /opt && \
-    rm sonarqube.zip
-ENV PATH="/opt/sonarqube-${SONARQUBE_VERSION}/bin/linux-x86-64:${PATH}"
+# Execute o comando do Sonar Scanner
+CMD sonar-scanner
 
-# Instalar o Sonar Scanner
-ENV SONAR_SCANNER_VERSION=4.6.2.2472
-RUN wget -O sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip && \
-    unzip sonar-scanner.zip -d /opt/sonar-scanner && \
-    rm sonar-scanner.zip
-ENV PATH="/opt/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/bin/linux-x86-64:${PATH}"
-
-# Definir o diretório de trabalho
-WORKDIR /opt/sonarqube-${SONARQUBE_VERSION}
-
-COPY provision.sh /opt/sonarqube-${SONARQUBE_VERSION}/provision.sh
-
-RUN chmod +x /opt/sonarqube-${SONARQUBE_VERSION}/provision.sh
-# Expor a porta do SonarQube
-EXPOSE 9000
-
-# Iniciar o SonarQube
-CMD ["./bin/linux-x86-64/sonar.sh", "start"]
